@@ -3,9 +3,6 @@
 
 -- CREATE OPTIMIZED FLIGHT DATA TABLE
 
--- Drop if exists
-DROP TABLE IF EXISTS flight_data_optimized;
-
 -- Create optimized table with smart filters (reduces from 1M+ to ~428K rows)
 CREATE TABLE flight_data_optimized AS
 SELECT 
@@ -49,9 +46,6 @@ SELECT COUNT(*) as optimized_rows FROM flight_data_optimized;
 
 -- CREATE AIRLINE PERFORMANCE TABLE (Chart 1)
 
--- Drop if exists
-DROP TABLE IF EXISTS airline_performance;
-
 -- Create airline performance table for Chart 1
 CREATE TABLE airline_performance AS
 SELECT 
@@ -80,10 +74,7 @@ SELECT * FROM airline_performance ORDER BY departure_delay_percentage;
 
 -- CREATE MONTHLY TRENDS TABLE (Chart 2)
 
--- Drop if exists
-DROP TABLE IF EXISTS monthly_delay_trends_clean;
-
--- Create monthly trends table with proper month names for Chart 2
+-- Create a monthly trends table with proper month names for Chart 2
 CREATE TABLE monthly_delay_trends_clean AS
 SELECT 
     fl_date,
@@ -137,9 +128,6 @@ SELECT COUNT(*) as monthly_rows FROM monthly_delay_trends_clean;
 
 -- CREATE YEARLY OVERVIEW TABLE (Chart 3)
 
--- Drop if exists
-DROP TABLE IF EXISTS yearly_delay_overview;
-
 -- Create yearly overview table for Chart 3
 CREATE TABLE yearly_delay_overview AS
 SELECT 
@@ -176,6 +164,7 @@ ORDER BY year;
 
 -- Verify yearly overview data
 SELECT * FROM yearly_delay_overview ORDER BY year;
+
 
 
 
