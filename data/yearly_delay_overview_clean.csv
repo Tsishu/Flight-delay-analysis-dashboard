@@ -1,0 +1,5 @@
+year,yearly_avg_dep_delay,yearly_avg_arr_delay,total_flights,delayed_flights,yearly_delay_percentage
+2020,4.44,25.09,85223,18054,21.18
+2021,16.23,30.32,112719,45929,40.75
+2022,20.39,32.72,133665,63033,47.16
+2023,23.66,35.88,96455,46936,48.66

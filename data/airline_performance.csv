@@ -1,0 +1,13 @@
+airline,total_flights,delayed_departures,departure_delay_percentage,performance_rating
+Republic Airline,25276,5978,23.65,Good
+SkyWest Airlines Inc.,56034,16048,28.64,Good
+Delta Air Lines Inc.,63426,22360,35.25,Fair
+Alaska Airlines Inc.,15820,6120,38.69,Fair
+United Air Lines Inc.,44058,17557,39.85,Fair
+American Airlines Inc.,65037,26077,40.10,Poor
+Spirit Air Lines,16778,7620,45.42,Poor
+Frontier Airlines Inc.,12441,5825,46.82,Poor
+JetBlue Airways,20647,9963,48.25,Poor
+Allegiant Air,8798,4480,50.92,Very Poor
+Southwest Airlines Co.,96369,49849,51.73,Very Poor
+Hawaiian Airlines Inc.,3378,2075,61.43,Very Poor
