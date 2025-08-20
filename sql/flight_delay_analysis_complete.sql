@@ -1,31 +1,36 @@
+-- =====================================================
+-- FLIGHT DELAY ANALYSIS PROJECT
+-- Created by: Atsushi Satomura
+-- Date: August 20 2025
+-- Purpose: Analyze US flight delays 2020-2023 for Tableau dashboard
+-- =====================================================
 
--- FLIGHT DELAY ANALYSIS DASHBOARD
+-- First, let's create a clean dataset by filtering out unnecessary data
+-- This reduces our dataset from over 1 million rows to about 428K rows
+-- We only keep flights with meaningful delays (>10 min) and major airlines
 
--- CREATE  FLIGHT DATA TABLE
-
--- Create optimized table with smart filters (reduces from 1M+ to ~428K rows)
 CREATE TABLE flight_data_optimized AS
 SELECT 
     fl_date,
-    EXTRACT(YEAR FROM fl_date) AS year,
-    EXTRACT(MONTH FROM fl_date) AS month,
+    EXTRACT(YEAR FROM fl_date) AS year,        -- Extract year for analysis
+    EXTRACT(MONTH FROM fl_date) AS month,      -- Extract month for trends
     airline,
     origin_city,
     dest,
-    dep_delay,
-    arr_delay,
-    delay_due_carrier_minutes,
-    delay_due_weather_minutes,
-    delay_due_nas_minutes,
-    delay_due_security_minutes,
-    delay_due_late_aircraft_minutes
+    dep_delay,                                 -- Departure delay in minutes
+    arr_delay,                                 -- Arrival delay in minutes
+    delay_due_carrier_minutes,                 -- Airline-caused delays
+    delay_due_weather_minutes,                 -- Weather-related delays
+    delay_due_nas_minutes,                     -- National Air System delays
+    delay_due_security_minutes,                -- Security-related delays
+    delay_due_late_aircraft_minutes            -- Late aircraft delays
 FROM csv_flight_data
 WHERE 
-    -- Keep only 2020-2023 
+    -- Focus on recent years (2020-2023) for relevant analysis
     EXTRACT(YEAR FROM fl_date) >= 2020
-    -- Keep only flights with meaningful delays (>10 minutes)
+    -- Only include flights with significant delays (>10 min) to focus on problematic flights
     AND (dep_delay > 10 OR arr_delay > 10)
-    -- Keep only major airlines (top 12)
+    -- Limit to major airlines that have enough data for meaningful analysis
     AND airline IN (
         'Southwest Airlines Co.',
         'Delta Air Lines Inc.', 
@@ -41,21 +46,26 @@ WHERE
         'Republic Airline'
     );
 
--- Verify the optimization worked
+-- Quick check to make sure our filtering worked
 SELECT COUNT(*) as optimized_rows FROM flight_data_optimized;
 
--- CREATE AIRLINE PERFORMANCE TABLE (Chart 1)
+-- =====================================================
+-- CHART 1: AIRLINE PERFORMANCE RANKING
+-- This table will show which airlines perform best/worst with delays
+-- =====================================================
 
--- Create airline performance table for Chart 1
 CREATE TABLE airline_performance AS
 SELECT 
     airline,
-    COUNT(*) AS total_flights,
-    COUNT(CASE WHEN dep_delay > 0 THEN 1 END) AS delayed_departures,
+    COUNT(*) AS total_flights,                 -- Total flights for each airline
+    COUNT(CASE WHEN dep_delay > 0 THEN 1 END) AS delayed_departures,  -- Count of delayed flights
+    -- Calculate delay percentage for each airline
     ROUND(
         (COUNT(CASE WHEN dep_delay > 0 THEN 1 END) * 100.0) / COUNT(*),
         2
     ) AS departure_delay_percentage,
+    -- Create performance categories based on delay percentages
+    -- This helps stakeholders quickly understand airline performance
     CASE 
         WHEN (COUNT(CASE WHEN dep_delay > 0 THEN 1 END) * 100.0) / COUNT(*) <= 20 THEN 'Excellent'
         WHEN (COUNT(CASE WHEN dep_delay > 0 THEN 1 END) * 100.0) / COUNT(*) <= 30 THEN 'Good'
@@ -65,21 +75,23 @@ SELECT
     END AS performance_rating
 FROM flight_data_optimized
 GROUP BY airline 
-HAVING COUNT(*) >= 50
-ORDER BY departure_delay_percentage ASC;
+HAVING COUNT(*) >= 50                          -- Only include airlines with enough data
+ORDER BY departure_delay_percentage ASC;       -- Best performers first
 
--- Verify airline performance data
+-- Let's see how our airline performance table looks
 SELECT * FROM airline_performance ORDER BY departure_delay_percentage;
 
+-- =====================================================
+-- CHART 2: MONTHLY TRENDS BY YEAR
+-- This will show seasonal patterns and year-over-year trends
+-- =====================================================
 
--- CREATE MONTHLY TRENDS TABLE (Chart 2)
-
--- Create a monthly trends table with proper month names for Chart 2
 CREATE TABLE monthly_delay_trends_clean AS
 SELECT 
     fl_date,
     EXTRACT(YEAR FROM fl_date) AS year,
     EXTRACT(MONTH FROM fl_date) AS month,
+    -- Convert month numbers to readable names for better visualization
     CASE 
         WHEN EXTRACT(MONTH FROM fl_date) = 1 THEN 'January'
         WHEN EXTRACT(MONTH FROM fl_date) = 2 THEN 'February'
@@ -123,20 +135,23 @@ WHERE
         'Republic Airline'
     );
 
--- Verify monthly trends data
+-- Check how many rows we have for monthly analysis
 SELECT COUNT(*) as monthly_rows FROM monthly_delay_trends_clean;
 
--- CREATE YEARLY OVERVIEW TABLE (Chart 3)
+-- =====================================================
+-- CHART 3: YEARLY OVERVIEW COMPARISON
+-- This shows how delays changed year by year
+-- =====================================================
 
--- Create yearly overview table for Chart 3
 CREATE TABLE yearly_delay_overview AS
 SELECT 
     EXTRACT(YEAR FROM fl_date) AS year,
-    -- Calculate TRUE yearly averages 
-    ROUND(AVG(dep_delay), 2) AS yearly_avg_dep_delay,
-    ROUND(AVG(arr_delay), 2) AS yearly_avg_arr_delay,
-    COUNT(*) AS total_flights,
-    COUNT(CASE WHEN dep_delay > 0 THEN 1 END) AS delayed_flights,
+    -- Calculate average delays per year (not sum of monthly averages)
+    ROUND(AVG(dep_delay), 2) AS yearly_avg_dep_delay,    -- Average departure delays
+    ROUND(AVG(arr_delay), 2) AS yearly_avg_arr_delay,    -- Average arrival delays
+    COUNT(*) AS total_flights,                            -- Total flights per year
+    COUNT(CASE WHEN dep_delay > 0 THEN 1 END) AS delayed_flights,  -- Count of delayed flights
+    -- Calculate what percentage of flights were delayed each year
     ROUND(
         (COUNT(CASE WHEN dep_delay > 0 THEN 1 END) * 100.0) / COUNT(*),
         2
@@ -159,19 +174,15 @@ WHERE
         'SkyWest Airlines Inc.',
         'Republic Airline'
     )
-GROUP BY EXTRACT(YEAR FROM fl_date)
-ORDER BY year;
+GROUP BY EXTRACT(YEAR FROM fl_date)                       -- Group by year to get yearly averages
+ORDER BY year;                                            -- Chronological order
 
--- Verify yearly overview data
+-- Let's see our yearly summary data
 SELECT * FROM yearly_delay_overview ORDER BY year;
 
-
-
-
-
-
-
-
-
-
-
+-- =====================================================
+-- SUMMARY: We now have 3 tables ready for Tableau:
+-- 1. airline_performance - for ranking chart
+-- 2. monthly_delay_trends_clean - for trend analysis
+-- 3. yearly_delay_overview - for year comparison
+-- =====================================================
