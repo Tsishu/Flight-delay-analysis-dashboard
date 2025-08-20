@@ -1,7 +1,7 @@
 
--- FLIGHT DELAY ANALYSIS DASHBOARD - COMPLETE PROJECT
+-- FLIGHT DELAY ANALYSIS DASHBOARD
 
--- CREATE OPTIMIZED FLIGHT DATA TABLE
+-- CREATE  FLIGHT DATA TABLE
 
 -- Create optimized table with smart filters (reduces from 1M+ to ~428K rows)
 CREATE TABLE flight_data_optimized AS
@@ -164,6 +164,7 @@ ORDER BY year;
 
 -- Verify yearly overview data
 SELECT * FROM yearly_delay_overview ORDER BY year;
+
 
 
 
