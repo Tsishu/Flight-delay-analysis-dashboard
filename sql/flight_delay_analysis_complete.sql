@@ -21,11 +21,11 @@ SELECT
     delay_due_late_aircraft_minutes
 FROM csv_flight_data
 WHERE 
-    -- Keep only 2020-2023 (most relevant)
+    -- Keep only 2020-2023 
     EXTRACT(YEAR FROM fl_date) >= 2020
     -- Keep only flights with meaningful delays (>10 minutes)
     AND (dep_delay > 10 OR arr_delay > 10)
-    -- Keep only major airlines (top 12 by volume)
+    -- Keep only major airlines (top 12)
     AND airline IN (
         'Southwest Airlines Co.',
         'Delta Air Lines Inc.', 
@@ -132,7 +132,7 @@ SELECT COUNT(*) as monthly_rows FROM monthly_delay_trends_clean;
 CREATE TABLE yearly_delay_overview AS
 SELECT 
     EXTRACT(YEAR FROM fl_date) AS year,
-    -- Calculate TRUE yearly averages (not sum of monthly averages)
+    -- Calculate TRUE yearly averages 
     ROUND(AVG(dep_delay), 2) AS yearly_avg_dep_delay,
     ROUND(AVG(arr_delay), 2) AS yearly_avg_arr_delay,
     COUNT(*) AS total_flights,
@@ -164,6 +164,7 @@ ORDER BY year;
 
 -- Verify yearly overview data
 SELECT * FROM yearly_delay_overview ORDER BY year;
+
 
 
 
