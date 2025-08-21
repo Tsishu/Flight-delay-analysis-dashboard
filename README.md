@@ -13,7 +13,7 @@
 *Annual delay trends comparison*
 
 ### Full Dashboard View
-![Complete Dashboard](images/full_dashboard.png)
+![Complete Dashboard](images/Airline_performance_final_dashboard.png)
 *Interactive dashboard with all visualizations*
 
 ## 🛠️ Local Setup Instructions
