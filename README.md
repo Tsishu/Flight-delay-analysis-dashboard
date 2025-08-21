@@ -35,16 +35,21 @@ cd flight-delay-analysis-dashboard
 3. **Run the SQL scripts** in the `sql/` folder:
    ```sql
    -- Run this in your PostgreSQL database
-   \i sql/flight_delay_analysis_complete.sql
+   \i 'sql/flight_delay_analysis_complete.sql'
    ```
 
 ### Step 3: Export Data for Tableau
-1. **Export the created tables** to CSV:
+1. **Export the created tables** to CSV:**
    ```sql
-   COPY airline_performance TO 'data/airline_performance.csv' CSV HEADER;
-   COPY monthly_delay_trends_clean TO 'data/monthly_trends_clean.csv' CSV HEADER;
-   COPY yearly_delay_overview TO 'data/yearly_overview.csv' CSV HEADER;
+   -- Note: Use absolute paths for Windows
+   COPY airline_performance TO 'C:\path\to\your\project\data\airline_performance.csv' CSV HEADER;
+   COPY monthly_delay_trends_clean TO 'C:\path\to\your\project\data\monthly_trends_clean.csv' CSV HEADER;
+   COPY yearly_delay_overview TO 'C:\path\to\your\project\data\yearly_overview.csv' CSV HEADER;
    ```
+
+   **Alternative: Use pgAdmin's export feature** (easier than COPY commands)
+   - Right-click table → Export → CSV
+   - Save to your project's data folder
 
 ### Step 4: Open in Tableau
 1. **Open Tableau Desktop**
@@ -57,4 +62,9 @@ cd flight-delay-analysis-dashboard
 - **Minimum size**: 100K+ flight records
 - **Required columns**: fl_date, airline, dep_delay, arr_delay, etc.
 
-- 
+### Troubleshooting
+- **If COPY commands fail**: Use pgAdmin's built-in export feature
+- **If paths don't work**: Use absolute file paths
+- **If permissions denied**: Run PostgreSQL as administrator
+
+
