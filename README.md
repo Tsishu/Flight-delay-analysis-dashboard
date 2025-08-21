@@ -1,11 +1,11 @@
 ## 📊 Dashboard Results
 
 ### Chart 1: Airline Performance Ranking
-![Airline Performance](images/airline_performance.png)
+![Airline Performance](imagesaAirline_performance.png)
 *Top 12 airlines ranked by delay performance*
 
 ### Chart 2: Monthly Trends by Year
-![Monthly Trends](images/monthly_trends.png)
+![Monthly Trends](/images/Monthly_Delay.png)
 *Seasonal patterns and year-over-year comparison*
 
 ### Chart 3: Yearly Overview
