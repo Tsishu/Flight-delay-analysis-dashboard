@@ -1,58 +1,60 @@
-# 🛫 Flight Delay Analysis Dashboard
+## 📊 Dashboard Results
 
-## 📊 Project Overview
-Comprehensive analysis of US flight delays (2020-2023) using PostgreSQL and Tableau. This project demonstrates advanced SQL skills, data optimization, and professional dashboard creation.
+### Chart 1: Airline Performance Ranking
+![Airline Performance](images/airline_performance.png)
+*Top 12 airlines ranked by delay performance*
 
-## 🎯 Key Features
-- **Airline Performance Ranking**: Top 12 airlines ranked by delay performance
-- **Monthly Trends Analysis**: Seasonal patterns and year-over-year comparisons
-- **Yearly Overview**: Comprehensive delay trends across 4 years
-- **Interactive Dashboard**: Professional Tableau visualization with filters
+### Chart 2: Monthly Trends by Year
+![Monthly Trends](images/monthly_trends.png)
+*Seasonal patterns and year-over-year comparison*
 
-##️ Technologies Used
-- **Database**: PostgreSQL
-- **Data Analysis**: SQL (Advanced queries, aggregations, CASE statements)
-- **Visualization**: Tableau
-- **Data Processing**: Data optimization from 1M+ to 428K rows
+### Chart 3: Yearly Overview
+![Yearly Overview](images/yearly_overview.png)
+*Annual delay trends comparison*
 
-## 📈 Key Insights
-- Southwest Airlines shows highest delay rates (46.01%)
-- Delta Air Lines demonstrates best performance (30.27%)
-- Summer months (June-August) show peak delay patterns
-- 2023 experienced highest average delays across all airlines
+### Full Dashboard View
+![Complete Dashboard](images/full_dashboard.png)
+*Interactive dashboard with all visualizations*
 
-## Getting Started
-1. Clone the repository
-2. Import CSV files into Tableau
-3. Open the dashboard file
-4. Explore interactive visualizations
+## 🛠️ Local Setup Instructions
 
-## 📊 Dashboard Screenshots
-[Your screenshots are already in the images/ folder!]
+### Prerequisites
+- PostgreSQL installed and running
+- Tableau Desktop (or Tableau Public)
+- Git for cloning the repository
 
-## Technical Details
-- **Data Source**: US Department of Transportation flight data
-- **Data Period**: 2020-2023
-- **Optimization**: Smart filtering reduced data by 60% while maintaining quality
-- **Performance**: Dashboard loads in under 3 seconds with 428K+ data points
+### Step 1: Clone the Repository
+```bash
+git clone https://github.com/Tsishu/flight-delay-analysis-dashboard.git
+cd flight-delay-analysis-dashboard
+```
 
-## 📚 Skills Demonstrated
-- Advanced SQL (EXTRACT, CASE WHEN, aggregations)
-- Data optimization and cleaning
-- Professional dashboard design
-- Business intelligence and analytics
-- Data storytelling and visualization
+### Step 2: Set Up Database
+1. **Create a new PostgreSQL database**
+2. **Import your flight data** (CSV or SQL dump)
+3. **Run the SQL scripts** in the `sql/` folder:
+   ```sql
+   -- Run this in your PostgreSQL database
+   \i sql/flight_delay_analysis_complete.sql
+   ```
 
-## Project Structure
-flight-delay-analysis-dashboard/
-├── data/ # CSV files for Tableau
-├── sql/ # SQL analysis scripts
-├── tableau/ # Dashboard files
-├── images/ # Screenshots and visuals
-└── README.md # Project documentation
+### Step 3: Export Data for Tableau
+1. **Export the created tables** to CSV:
+   ```sql
+   COPY airline_performance TO 'data/airline_performance.csv' CSV HEADER;
+   COPY monthly_delay_trends_clean TO 'data/monthly_trends_clean.csv' CSV HEADER;
+   COPY yearly_delay_overview TO 'data/yearly_overview.csv' CSV HEADER;
+   ```
 
-## 🤝 Contributing
-This is a portfolio project demonstrating data analysis skills.
+### Step 4: Open in Tableau
+1. **Open Tableau Desktop**
+2. **Connect to the CSV files** in the `data/` folder
+3. **Open the dashboard** from the `tableau/` folder
+4. **Explore the interactive visualizations**
 
-## 📄 License
-MIT License - feel free to use this project for learning purposes.
+### Data Requirements
+- **Original dataset**: US flight delay data (2019-2023)
+- **Minimum size**: 100K+ flight records
+- **Required columns**: fl_date, airline, dep_delay, arr_delay, etc.
+
+- 
